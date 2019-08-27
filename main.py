@@ -42,7 +42,9 @@ screen=pygame.display.set_mode((wWidth,wHeight))
 pygame.display.set_caption("Hung bia :v")
 
 #loading images
-chay=["chay1.png","chay2.png"]
+chay1=pygame.transform.scale(loadImg("chay1.png"),(pWidth,pHeight)).convert_alpha()
+chay2=pygame.transform.scale(loadImg("chay2.png"),(pWidth,pHeight)).convert_alpha()
+chay=[chay1,chay2]
 
 bia=pygame.transform.scale(loadImg("bia.png"),(eWidth,eHeight)).convert_alpha()
 tuongot=pygame.transform.scale(loadImg("tuongot.png"),(eWidth,eHeight)).convert_alpha()
@@ -105,12 +107,12 @@ class Player(pygame.sprite.Sprite):
 			elif keyPressed(pygame.K_LEFT) and self.rect.left>=1:
 				self.rect.x-=self.speed
 				index=self.animation.animate()
-				self.image=pygame.transform.scale(loadImg(chay[index]),(self.width,self.height)).convert_alpha()
+				self.image=chay[index]
 				self.image.set_colorkey(black)
 			elif keyPressed(pygame.K_RIGHT) and self.rect.right<=playZoneX-1:
 				self.rect.x+=self.speed
 				index=self.animation.animate()
-				self.image=pygame.transform.scale(loadImg(chay[index]),(self.width,self.height)).convert_alpha()
+				self.image=chay[index]
 				self.image.set_colorkey(black)
 			else:
 				self.image=dung
