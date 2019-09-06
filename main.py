@@ -1,7 +1,7 @@
 import pygame
 import random
 
-
+pygame.init()
 #Assets_dir=path.join(path.dirname(__file__),"Assets")
 #PNG_dir=path.join(Assets_dir,"PNG")
 
@@ -11,6 +11,8 @@ playZoneX=600
 FPS=30
 diem=0
 miss=0
+running = True
+gameOver=False
 
 
 
@@ -20,6 +22,7 @@ red=(255,0,0)
 green=(0,255,0)
 blue=(0,0,255)
 
+font=pygame.font.SysFont(None,25)
 
 def loadImg(name):
 	a="Assets/PNG/"+name
@@ -30,6 +33,14 @@ def keyPressed(inputKey):
 		return True
 	else:
 		return False
+def message_to_screen(message,color=black,position=[]):
+	#position[0]-=30
+	#position[1]-=30
+
+	screen_text= font.render(message,True,color)
+	screen.blit(screen_text,position)
+	pygame.display.update()
+
 
 
 #player and enemy spec
@@ -101,7 +112,7 @@ class Player(pygame.sprite.Sprite):
 				self.image=hung
 				self.image.set_colorkey(black)
 				self.hung=True
-				self.mau-=2
+				self.mau-=1
 				print self.mau
 
 			elif keyPressed(pygame.K_LEFT) and self.rect.left>=1:
@@ -122,7 +133,9 @@ class Player(pygame.sprite.Sprite):
 			self.image=chet
 			self.image.set_colorkey(black)
 			self.rect.bottom=650
-
+			global gameOver
+			gameOver=True
+			message_to_screen("chet cmnr :v",red,[playZoneX/2,wHeight/2])
 
 
 
@@ -202,8 +215,10 @@ enemy=Enemy(eWidth,eHeight,player)
 all_sprites.add(enemy)
 hinhgai=HinhGai()
 all_sprites.add(hinhgai)
+
 def gameLoop():
-	running = True
+	global running
+	global gameOver
 	while running:
 		clock.tick(FPS)
 		for event in pygame.event.get():
@@ -214,6 +229,9 @@ def gameLoop():
 		all_sprites.draw(screen)
 		all_sprites.update()
 		pygame.display.update()
+		message_to_screen(str(player.mau),red,[0,0])
+		message_to_screen(str(miss),red,[playZoneX-30,0])
+	pygame.quit()
+	quit()
 
 gameLoop()
-pygame.quit()
